@@ -57,7 +57,7 @@ public class VehicleControllerPhysics : MonoBehaviour
         _steeringInput = Input.GetAxis("Steering");
         _gasPedalInput = Input.GetAxis("Gas");
         _brakePedalInput = Input.GetAxis("Brake");
-        _handbrakeInput = Input.GetButtonDown("Handbrake");
+        _handbrakeInput = Input.GetButton("Handbrake");
         if (Input.GetButtonDown("ToggleReverse"))
         {
             _reverseOn = !_reverseOn;
@@ -66,7 +66,7 @@ public class VehicleControllerPhysics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("Horizontal: " + _steeringInput + " Gas: " + _gasPedalInput + " Brake: " + _brakePedalInput + " HandBrake: " + _handbrakeInput);
+        //Debug.Log("Horizontal: " + _steeringInput + " Gas: " + _gasPedalInput + " Brake: " + _brakePedalInput + " HandBrake: " + _handbrakeInput);
 
         CalculateTorque();
         CalculateSteering();
