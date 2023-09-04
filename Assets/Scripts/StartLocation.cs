@@ -12,7 +12,7 @@ public class StartLocation : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // enter vehicle
+            Debug.Log("StartLocation begin trip");
             passenger.BeginTrip();
         }
     }
@@ -21,7 +21,6 @@ public class StartLocation : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // enter vehicle
             gameObject.SetActive(false);
         }
     }

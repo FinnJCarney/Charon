@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ using TMPro;
 
 public class DialogueController : MonoBehaviour
 {
-    
+    public static DialogueController Instance;
+
     private LineView _yarnLineView;
     public LineView YarnLineView
     {
@@ -28,26 +30,35 @@ public class DialogueController : MonoBehaviour
         }
         private set => _yarnDialogueRunner = value;
     }
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        LineView lv;
-        OptionsListView olv;
+        // Ensure that there is only one instance of the DialogueManager.
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Destroy(gameObject);
         
-        
-        // cannot press continue while options active - disable it.
-        
+        DialogueRunner = GetComponent<DialogueRunner>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartDialogue(string yarnStartNode)
     {
-        
+        if (_yarnDialogueRunner.IsDialogueRunning)
+        {
+            Debug.Log($"Dialogue node {_yarnDialogueRunner.CurrentNodeName} currently running while trying to start {yarnStartNode}!");
+            _yarnDialogueRunner.Stop();
+        }
+        _yarnDialogueRunner.StartDialogue(yarnStartNode);
     }
 
     public void OnNodeStart()
     {
         Debug.Log("Line!");
+    }
+
+    public void StopDialogue()
+    {
+        _yarnDialogueRunner.Stop();
     }
 }

@@ -53,7 +53,7 @@ public class CameraControls : MonoBehaviour
     private void GetInput()
     {
         _cameraXInput = Input.GetAxis("Mouse X") + Input.GetAxis("CameraX");
-        _cameraYInput = Input.GetAxis("Mouse Y") + Input.GetAxis("CameraY");
+        _cameraYInput = -Input.GetAxis("Mouse Y") + Input.GetAxis("CameraY");
     }
 
     private void RotateCamera()

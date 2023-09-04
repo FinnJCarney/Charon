@@ -7,20 +7,24 @@ public class EndLocation : MonoBehaviour
     
     [SerializeField] private Passenger passenger;
 
+    private bool _collisionTriggered = false;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // enter vehicle
-            passenger.EndTrip();
+            if (ObjectiveController.Instance.currentPassenger == passenger)
+            {
+                passenger.EndTrip();
+                _collisionTriggered = true;
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && _collisionTriggered)
         {
-            // enter vehicle
             gameObject.SetActive(false);
         }
     }
