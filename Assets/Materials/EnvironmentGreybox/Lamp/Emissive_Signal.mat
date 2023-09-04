@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Emissive_Warm
+  m_Name: Emissive_Signal
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -79,6 +79,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8651094, g: 0.8962264, b: 0.63834995, a: 1}
-    - _EmissionColor: {r: 11.156977, g: 5.2320266, b: 0.99991745, a: 1}
+    - _Color: {r: 1, g: 0.8313382, b: 0.4575472, a: 1}
+    - _EmissionColor: {r: 13.766359, g: 0.7123078, b: 0, a: 1}
   m_BuildTextureStacks: []
