@@ -26,7 +26,8 @@ public class ObjectiveController : MonoBehaviour
     
     public void DropOffPassenger()
     {
+        DialogueController.Instance.StopConversationDialogue();
+        DialogueController.Instance.InterruptLineForArriveAtDestination();
         currentPassenger = null;
-        DialogueController.Instance.StopDialogue();
     }
 }

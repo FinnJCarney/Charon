@@ -1,8 +1,26 @@
-﻿title: TestNPC1
-tags:
+﻿title: TestNPC1Crash
+position: 11,210
+---
+
+NPC: Woah look out!!
+Me: oops sorry
+
+===
+
+title: TestNPC1ArriveAtDestination
+position: 17,366
+---
+
+NPC: Here works! Thanks for the ride!
+Me: No problem!
+
+===
+
+title: TestNPC1
+position: 0,0
 ---
 
 NPC: Hi nice to meet you i am a metaphor.
-Metaphor: Please take me to the blue light
+Metaphor: Please take me to the church
 
 ===

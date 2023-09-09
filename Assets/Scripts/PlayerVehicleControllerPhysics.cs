@@ -14,22 +14,13 @@ public class VehicleControllerPhysics : MonoBehaviour
     [SerializeField] private float maxReverseTorque = 200f;
     [SerializeField] private float brakeTorque = 2000f;
     [SerializeField] private float handbrakeTorque = 4000f;
-    [SerializeField] private float rateForwardAcceleration = 1f;
-    [SerializeField] private float rateReverseAcceleration = 1f;
-    [SerializeField] private float rateBrakeDeceleration = 1f;
-    [SerializeField] private float rateNaturalDeceleration = .1f;
-    [SerializeField] private float rateTurningSpeed = .1f;
-    [SerializeField] private float brakeGripModifier = 1f;
-    [SerializeField] private float handbrakeGripModifier = 5f;
-    [SerializeField] private float rateHandbrakeDeceleration = 10f;
     [SerializeField] private float maxSteeringAngle = 30f;
     [SerializeField] private AnimationCurve gasInputCurve;
-    [SerializeField] private AnimationCurve gripCurve;
 
     private float _steeringInput = 0f;
     private float _gasPedalInput = 0f;
     private float _brakePedalInput = 0f;
-    private bool _handbrakeInput = false;
+    private bool _handbrakeOn = true;
     private bool _reverseOn = false;
     
     [SerializeField] private WheelCollider frontLeftWheelCollider;
@@ -41,11 +32,10 @@ public class VehicleControllerPhysics : MonoBehaviour
     [SerializeField] private Transform frontRightWheelTransform;
     [SerializeField] private Transform backLeftWheelTransform;
     [SerializeField] private Transform backRightWheelTransform;
-
-    void Start()
-    {
-        
-    }
+    
+    
+    [SerializeField] private Transform steeringWheelTransform;
+    [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
 
     void Update()
     {
@@ -57,7 +47,10 @@ public class VehicleControllerPhysics : MonoBehaviour
         _steeringInput = Input.GetAxis("Steering");
         _gasPedalInput = Input.GetAxis("Gas");
         _brakePedalInput = Input.GetAxis("Brake");
-        _handbrakeInput = Input.GetButton("Handbrake");
+        if (Input.GetButtonDown("Handbrake"))
+        {
+            _handbrakeOn = !_handbrakeOn;
+        }
         if (Input.GetButtonDown("ToggleReverse"))
         {
             _reverseOn = !_reverseOn;
@@ -76,15 +69,16 @@ public class VehicleControllerPhysics : MonoBehaviour
     {
         float motorTorque = 0f;
 
-        if (!_handbrakeInput)
+        if (!_handbrakeOn)
         {
+            float adjustedGasPedalInput = gasInputCurve.Evaluate(_gasPedalInput);
             if (!_reverseOn)
             {
-                motorTorque = Mathf.Max(minForwardOrBackTorque, _gasPedalInput * maxForwardTorque);
+                motorTorque = Mathf.Max(minForwardOrBackTorque, adjustedGasPedalInput * maxForwardTorque);
             }
             else
             {
-                motorTorque = Mathf.Min(-minForwardOrBackTorque, _gasPedalInput * -maxReverseTorque);
+                motorTorque = Mathf.Min(-minForwardOrBackTorque, adjustedGasPedalInput * -maxReverseTorque);
             }
         }
         
@@ -93,7 +87,7 @@ public class VehicleControllerPhysics : MonoBehaviour
         
         // braking
 
-        float currentBrakeTorque = _handbrakeInput ? handbrakeTorque : _brakePedalInput * brakeTorque;
+        float currentBrakeTorque = _handbrakeOn ? handbrakeTorque : _brakePedalInput * brakeTorque;
         
         frontLeftWheelCollider.brakeTorque = currentBrakeTorque;
         frontRightWheelCollider.brakeTorque = currentBrakeTorque;
@@ -111,6 +105,8 @@ public class VehicleControllerPhysics : MonoBehaviour
         UpdateWheel(frontRightWheelCollider, frontRightWheelTransform);
         UpdateWheel(backLeftWheelCollider, backLeftWheelTransform);
         UpdateWheel(backRightWheelCollider, backRightWheelTransform);
+
+        steeringWheelTransform.localEulerAngles = new Vector3(0, currentSteeringAngle * steeringWheelModelRotationMultiplier, 0f);
     }
     
     private void UpdateWheel(WheelCollider wheelCollider, Transform wheelTransform)
