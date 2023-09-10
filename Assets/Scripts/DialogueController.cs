@@ -33,6 +33,12 @@ public class DialogueController : MonoBehaviour
         
         DialogueRunnerInterrupts.onNodeComplete.AddListener(OnInterruptComplete);
         DialogueRunnerInterrupts.gameObject.SetActive(false);
+
+        if (ObjectiveController.Instance == null)
+        {
+            Debug.LogWarning("ObjectiveController not present in scene! Dialogue will not work!");
+        }
+        DialogueRunnerInterrupts.AddCommandHandler("waitForCarToStop", WaitForCarToStop);
     }
 
     public void StartDialogue(string yarnStartNode)
@@ -78,6 +84,23 @@ public class DialogueController : MonoBehaviour
         // Set animation of current passenger(s)
     }
     
+    private Coroutine WaitForCarToStop()
+    {
+        return StartCoroutine(WaitForCarToStopCO());
+    }
+
+    private IEnumerator WaitForCarToStopCO()
+    {
+        WaitForSeconds timeStep = new WaitForSeconds(.2f);
+        Rigidbody vehicleRB = GetComponentInParent<Rigidbody>();
+        float minSpeedForCompletion = .2f;
+        
+        while (vehicleRB != null && vehicleRB.velocity.sqrMagnitude > minSpeedForCompletion * minSpeedForCompletion)
+        {
+            yield return timeStep;
+        }
+    }
+    
     [SerializeField] private string crashInterruptionNodeBase = "Crash";
     [SerializeField] private int crashInterruptionPriority = 10;
     public void InterruptLineForCrash()
@@ -97,10 +120,18 @@ public class DialogueController : MonoBehaviour
 
     private void InterruptConversation(string reason, int priority)
     {
+        //Debug.Log($"Is dialogue running: {DialogueRunnerInterrupts.IsDialogueRunning}, reason: {reason}, current reason: {_currentInterruptReason}, priority: {priority}, current priority: {_currentInterruptPriority}");
         // don't interrupt dialogue if a more important or same interrupt is currently occurring.
-        if (DialogueRunnerInterrupts.IsDialogueRunning && (reason.Equals(_currentInterruptReason) || _currentInterruptPriority > priority))
+        if (DialogueRunnerInterrupts.IsDialogueRunning)
         {
-            return;
+            if (reason.Equals(_currentInterruptReason) || _currentInterruptPriority >= priority)
+            {
+                return;
+            }
+            else
+            {
+                DialogueRunnerInterrupts.Stop();
+            }
         }
         
         string interruptionNodeName;
@@ -117,9 +148,15 @@ public class DialogueController : MonoBehaviour
         if (DialogueRunnerInterrupts.NodeExists(interruptionNodeName))
         {
             Debug.Log("Node exists!");
+            if (_currentInterruptReason.Equals(arriveAtDestinationInterruptionNodeBase))
+            {
+                DialogueRunnerMain.Stop();
+            }
             DialogueRunnerMain.gameObject.SetActive(false);
             DialogueRunnerInterrupts.gameObject.SetActive(true);
             DialogueRunnerInterrupts.StartDialogue(interruptionNodeName);
+            _currentInterruptReason = reason;
+            _currentInterruptPriority = priority;
         }
         else
         {
@@ -132,6 +169,11 @@ public class DialogueController : MonoBehaviour
         Debug.Log("Interrupt complete!");
         DialogueRunnerInterrupts.gameObject.SetActive(false);
         DialogueRunnerMain.gameObject.SetActive(true);
+        Debug.Log($"Interrupt reason: {_currentInterruptReason}, does passenger exist? {(ObjectiveController.Instance.currentPassenger == null ? "no" : "yes")}");
+        if (_currentInterruptReason.Equals(arriveAtDestinationInterruptionNodeBase) && ObjectiveController.Instance.currentPassenger == null)
+        {
+            DialogueRunnerMain.Stop();
+        }
         _currentInterruptReason = "";
         _currentInterruptPriority = 0;
     }

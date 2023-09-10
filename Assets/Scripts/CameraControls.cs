@@ -48,8 +48,8 @@ public class CameraControls : MonoBehaviour
 
     private void GetInput()
     {
-        _cameraXInput = /*Input.GetAxis("Mouse X") +*/ Input.GetAxis("CameraX");
-        _cameraYInput = /*-Input.GetAxis("Mouse Y") +*/ Input.GetAxis("CameraY");
+        //_cameraXInput = /*Input.GetAxis("Mouse X") +*/ Input.GetAxis("CameraX");
+        //_cameraYInput = /*-Input.GetAxis("Mouse Y") +*/ Input.GetAxis("CameraY");
     }
     
     public void CameraXInput(InputAction.CallbackContext context)
@@ -59,7 +59,7 @@ public class CameraControls : MonoBehaviour
     
     public void CameraYInput(InputAction.CallbackContext context)
     {
-        _cameraYInput = context.ReadValue<float>();
+        _cameraYInput = -context.ReadValue<float>();
     }
 
     private void RotateCamera()
@@ -67,7 +67,7 @@ public class CameraControls : MonoBehaviour
         float adjustedXInput = _cameraXInput * sensitivity * Time.deltaTime;
         float adjustedYInput = _cameraYInput * sensitivity * Time.deltaTime;
         
-        Debug.Log($"CameraX = {Input.GetAxis("CameraX")}, CameraY = {Input.GetAxis("CameraY")}");
+        //Debug.Log($"CameraX = {Input.GetAxis("CameraX")}, CameraY = {Input.GetAxis("CameraY")}");
 
         if (absoluteMovement)
         {

@@ -11,7 +11,9 @@ title: TestNPC1ArriveAtDestination
 position: 17,366
 ---
 
-NPC: Here works! Thanks for the ride!
+NPC: Please stop here!
+<<waitForCarToStop>>
+NPC: Thanks for the ride!
 Me: No problem!
 
 ===
