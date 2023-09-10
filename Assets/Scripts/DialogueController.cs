@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
-using TMPro;
 
 public class DialogueController : MonoBehaviour
 {
@@ -82,23 +79,30 @@ public class DialogueController : MonoBehaviour
     }
     
     [SerializeField] private string crashInterruptionNodeBase = "Crash";
+    [SerializeField] private int crashInterruptionPriority = 10;
     public void InterruptLineForCrash()
     {
-        InterruptConversation(crashInterruptionNodeBase);
+        InterruptConversation(crashInterruptionNodeBase, crashInterruptionPriority);
     }
     
     [SerializeField] private string arriveAtDestinationInterruptionNodeBase = "ArriveAtDestination";
+    [SerializeField] private int arrivalInterruptionPriority = 50;
     public void InterruptLineForArriveAtDestination()
     {
-        InterruptConversation(arriveAtDestinationInterruptionNodeBase);
+        InterruptConversation(arriveAtDestinationInterruptionNodeBase, arrivalInterruptionPriority);
     }
+    
+    private string _currentInterruptReason = "";
+    private int _currentInterruptPriority = 0;
 
-    private void InterruptConversation(string reason)
+    private void InterruptConversation(string reason, int priority)
     {
-        if (DialogueRunnerInterrupts.IsDialogueRunning)
+        // don't interrupt dialogue if a more important or same interrupt is currently occurring.
+        if (DialogueRunnerInterrupts.IsDialogueRunning && (reason.Equals(_currentInterruptReason) || _currentInterruptPriority > priority))
         {
             return;
         }
+        
         string interruptionNodeName;
         if (ObjectiveController.Instance.currentPassenger != null)
         {
@@ -128,5 +132,7 @@ public class DialogueController : MonoBehaviour
         Debug.Log("Interrupt complete!");
         DialogueRunnerInterrupts.gameObject.SetActive(false);
         DialogueRunnerMain.gameObject.SetActive(true);
+        _currentInterruptReason = "";
+        _currentInterruptPriority = 0;
     }
 }

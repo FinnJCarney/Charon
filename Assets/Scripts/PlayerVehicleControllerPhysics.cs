@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 // borrowing heavily from https://www.youtube.com/watch?v=Z4HA8zJhGEk
@@ -41,10 +42,41 @@ public class VehicleControllerPhysics : MonoBehaviour
     {
         GetInput();
     }
+    
+    public void SteeringInput(InputAction.CallbackContext context)
+    {
+        _steeringInput = context.ReadValue<float>();
+    }
+    
+    public void GasPedalInput(InputAction.CallbackContext context)
+    {
+        _gasPedalInput = context.ReadValue<float>();
+    }
+    
+    public void BrakePedalInput(InputAction.CallbackContext context)
+    {
+        _brakePedalInput = context.ReadValue<float>();
+    }
+    
+    public void HandbrakeInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _handbrakeOn = !_handbrakeOn;
+        }
+    }
+    
+    public void ReverseInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _reverseOn = !_reverseOn;
+        }
+    }
 
     private void GetInput()
     {
-        _steeringInput = Input.GetAxis("Steering");
+        /*_steeringInput = Input.GetAxis("Steering");
         _gasPedalInput = Input.GetAxis("Gas");
         _brakePedalInput = Input.GetAxis("Brake");
         if (Input.GetButtonDown("Handbrake"))
@@ -54,7 +86,7 @@ public class VehicleControllerPhysics : MonoBehaviour
         if (Input.GetButtonDown("ToggleReverse"))
         {
             _reverseOn = !_reverseOn;
-        }
+        }*/
     }
 
     private void FixedUpdate()
