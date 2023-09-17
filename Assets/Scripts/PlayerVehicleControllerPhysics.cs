@@ -37,33 +37,48 @@ public class VehicleControllerPhysics : MonoBehaviour
     
     [SerializeField] private Transform steeringWheelTransform;
     [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
-
-    void Update()
-    {
-        GetInput();
-    }
     
     public void SteeringInput(InputAction.CallbackContext context)
     {
-        _steeringInput = context.ReadValue<float>();
+        SteeringInput(context.ReadValue<float>());
+    }
+    
+    public void SteeringInput(float value)
+    {
+        _steeringInput = value;
     }
     
     public void GasPedalInput(InputAction.CallbackContext context)
     {
-        _gasPedalInput = context.ReadValue<float>();
+        GasPedalInput(context.ReadValue<float>());
+    }
+    
+    public void GasPedalInput(float value)
+    {
+        _gasPedalInput = value;
     }
     
     public void BrakePedalInput(InputAction.CallbackContext context)
     {
-        _brakePedalInput = context.ReadValue<float>();
+        BrakePedalInput(context.ReadValue<float>());
+    }
+    
+    public void BrakePedalInput(float value)
+    {
+        _brakePedalInput = value;
     }
     
     public void HandbrakeInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            _handbrakeOn = !_handbrakeOn;
+            HandbrakeInputToggle();
         }
+    }
+    
+    public void HandbrakeInputToggle()
+    {
+        _handbrakeOn = !_handbrakeOn;
     }
     
     public void ReverseInput(InputAction.CallbackContext context)
@@ -72,21 +87,6 @@ public class VehicleControllerPhysics : MonoBehaviour
         {
             _reverseOn = !_reverseOn;
         }
-    }
-
-    private void GetInput()
-    {
-        /*_steeringInput = Input.GetAxis("Steering");
-        _gasPedalInput = Input.GetAxis("Gas");
-        _brakePedalInput = Input.GetAxis("Brake");
-        if (Input.GetButtonDown("Handbrake"))
-        {
-            _handbrakeOn = !_handbrakeOn;
-        }
-        if (Input.GetButtonDown("ToggleReverse"))
-        {
-            _reverseOn = !_reverseOn;
-        }*/
     }
 
     private void FixedUpdate()
