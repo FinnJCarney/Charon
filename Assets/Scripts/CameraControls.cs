@@ -22,6 +22,7 @@ public class CameraControls : MonoBehaviour
 
     private float _cameraXInput;
     private float _cameraYInput;
+    private bool _camera180Input;
 
     // Moves camera up and down by rotating on X axis.
     private float _localXRotation = 0f;
@@ -62,6 +63,14 @@ public class CameraControls : MonoBehaviour
         _cameraYInput = -context.ReadValue<float>();
     }
 
+    public void Camera180Input(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Hello?");
+        }
+    }
+
     private void RotateCamera()
     {
         float adjustedXInput = _cameraXInput * sensitivity * Time.deltaTime;
@@ -74,26 +83,35 @@ public class CameraControls : MonoBehaviour
             // rotation is set linearly based on thumbstick position, so putting it all the way to left will move player to leftmost position etc.
             float newXRotation, newYRotation;
 
-            // Up
-            if (_cameraYInput > 0f)
+            //180
+            if (_camera180Input)
             {
-                newXRotation = Mathf.Lerp(0, verticalRangePos, _cameraYInput);
+                newXRotation = 180f;
+                newYRotation = 0f;
             }
-            // Down
             else
             {
-                newXRotation = Mathf.Lerp(0, verticalRangeNeg, -_cameraYInput);
-            }
-            
-            // Left
-            if (_cameraXInput > 0f)
-            {
-                newYRotation = Mathf.Lerp(0, horizontalRangePos, _cameraXInput);
-            }
-            // Right
-            else
-            {
-                newYRotation = Mathf.Lerp(0, horizontalRangeNeg, -_cameraXInput);
+                // Up
+                if (_cameraYInput > 0f)
+                {
+                    newXRotation = Mathf.Lerp(0, verticalRangePos, _cameraYInput);
+                }
+                // Down
+                else
+                {
+                    newXRotation = Mathf.Lerp(0, verticalRangeNeg, -_cameraYInput);
+                }
+
+                // Left
+                if (_cameraXInput > 0f)
+                {
+                    newYRotation = Mathf.Lerp(0, horizontalRangePos, _cameraXInput);
+                }
+                // Right
+                else
+                {
+                    newYRotation = Mathf.Lerp(0, horizontalRangeNeg, -_cameraXInput);
+                }
             }
         
             transform.localRotation = Quaternion.Euler(newXRotation, newYRotation, 0);

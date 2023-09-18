@@ -1,0 +1,40 @@
+﻿title: NoBridgesNPC_Crash
+---
+
+Lady with an Elk's Face: Are you mad?
+
+===
+
+title: NoBridgesNPC_Arrive
+---
+
+Lady with an Elk's Face: This is good. 
+<<waitForCarToStop>>
+Lady with an Elk's Face: Thank you, Driver.
+
+===
+
+title: NoBridgesNPC_UnderBridge
+---
+
+Lady with a Elk's Face: Ignorant. 
+//She fades from view, the trip ends
+
+===
+
+title: NoBridgesNPC_Start
+---
+
+Lady with an Elk's Face: I'm heading to Angels.
+Lady with an Elk's Face: And please, don't go under any bridges on the way. Thank you.
+	-> Player: What about Tunnels? 
+		Lady with an Elk's Face: Tunnels too. Just need to stay out in the open.
+			-> Player: Why?
+				Lady with an Elk's Face: It's not for me to explain.				
+			-> Player: Understood
+				Lady with an Elk's Face: Much appreciated. 
+	-> Player: Why? 
+		Lady with an Elk's Face: It's not for me to explain.
+	-> Player: Understood.
+		Lady with an Elk's Face: Much appreciated. 
+===
