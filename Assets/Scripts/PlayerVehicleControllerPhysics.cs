@@ -39,7 +39,7 @@ public class VehicleControllerPhysics : MonoBehaviour
     [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
 
     [SerializeField] private Transform SpeedNeedleTransform;
-    [SerializeField] [Range(0, 360)] private float SpeedNeedleMaxAngle;
+    [SerializeField] [Range(0.1f, 20)] private float SpeedNeedleAngleMultiplier;
     [SerializeField] private Vector3 SpeedNeedleStartRot;
     private Vector3 lastPos;
     
@@ -157,7 +157,7 @@ public class VehicleControllerPhysics : MonoBehaviour
     private void UpdateNeedle()
     {
         float currentSpeed = (this.transform.position - lastPos).magnitude / Time.fixedDeltaTime;
-        SpeedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(SpeedNeedleStartRot.x, SpeedNeedleStartRot.y + (currentSpeed * SpeedNeedleMaxAngle), SpeedNeedleStartRot.z)));
+        SpeedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(SpeedNeedleStartRot.x, SpeedNeedleStartRot.y + (currentSpeed * SpeedNeedleAngleMultiplier), SpeedNeedleStartRot.z)));
         lastPos = this.transform.position;
     }
 }
