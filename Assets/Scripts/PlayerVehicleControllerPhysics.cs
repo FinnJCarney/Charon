@@ -37,6 +37,11 @@ public class VehicleControllerPhysics : MonoBehaviour
     
     [SerializeField] private Transform steeringWheelTransform;
     [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
+
+    [SerializeField] private Transform SpeedNeedleTransform;
+    [SerializeField] [Range(0, 360)] private float SpeedNeedleMaxAngle;
+    [SerializeField] private Vector3 SpeedNeedleStartRot;
+    private Vector3 lastPos;
     
     public void SteeringInput(InputAction.CallbackContext context)
     {
@@ -95,6 +100,7 @@ public class VehicleControllerPhysics : MonoBehaviour
 
         CalculateTorque();
         CalculateSteering();
+        UpdateNeedle();
     }
 
     private void CalculateTorque()
@@ -146,5 +152,12 @@ public class VehicleControllerPhysics : MonoBehaviour
         wheelCollider.GetWorldPose(out Vector3 pos, out Quaternion rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
+    }
+
+    private void UpdateNeedle()
+    {
+        float currentSpeed = (this.transform.position - lastPos).magnitude / Time.fixedDeltaTime;
+        SpeedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(SpeedNeedleStartRot.x, SpeedNeedleStartRot.y + (currentSpeed * SpeedNeedleMaxAngle), SpeedNeedleStartRot.z)));
+        lastPos = this.transform.position;
     }
 }
