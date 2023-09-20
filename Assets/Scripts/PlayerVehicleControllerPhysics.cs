@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 
 // borrowing heavily from https://www.youtube.com/watch?v=Z4HA8zJhGEk
@@ -33,16 +34,26 @@ public class VehicleControllerPhysics : MonoBehaviour
     [SerializeField] private Transform frontRightWheelTransform;
     [SerializeField] private Transform backLeftWheelTransform;
     [SerializeField] private Transform backRightWheelTransform;
-    
-    
+
+    [Header("Visual Elements")]
+
     [SerializeField] private Transform steeringWheelTransform;
     [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
 
     [SerializeField] private Transform SpeedNeedleTransform;
     [SerializeField] [Range(0.1f, 20)] private float SpeedNeedleAngleMultiplier;
-    [SerializeField] private Vector3 SpeedNeedleStartRot;
+     private Vector3 SpeedNeedleStartRot;
     private Vector3 lastPos;
-    
+
+    [Header("Audio Elements")]
+    [SerializeField] private FMODUnity.EventReference engineRef;
+    [SerializeField] private Transform engineTransform;
+    private FMOD.Studio.EventInstance engineInst;
+    private FMOD.Studio.PARAMETER_ID torque;
+
+    private float currentSpeed;
+
+
     public void SteeringInput(InputAction.CallbackContext context)
     {
         SteeringInput(context.ReadValue<float>());
@@ -94,12 +105,29 @@ public class VehicleControllerPhysics : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SetNeedle();
+        CreateAudioEvents();
+    }
+
+    private void SetNeedle()
+    {
+        SpeedNeedleStartRot = SpeedNeedleTransform.rotation.eulerAngles;
+    }
+
+    private void CreateAudioEvents()
+    {
+        engineInst = FMODManager.i.CreateAttachedInstance(engineRef, engineTransform);
+    }
+
     private void FixedUpdate()
     {
         //Debug.Log("Horizontal: " + _steeringInput + " Gas: " + _gasPedalInput + " Brake: " + _brakePedalInput + " HandBrake: " + _handbrakeInput);
 
         CalculateTorque();
         CalculateSteering();
+        CalculateSpeed();
         UpdateNeedle();
     }
 
@@ -131,6 +159,8 @@ public class VehicleControllerPhysics : MonoBehaviour
         frontRightWheelCollider.brakeTorque = currentBrakeTorque;
         backLeftWheelCollider.brakeTorque = currentBrakeTorque;
         backRightWheelCollider.brakeTorque = currentBrakeTorque;
+
+        UpdateAudio(motorTorque / maxForwardTorque * (currentSpeed / 10));
     }
 
     private void CalculateSteering()
@@ -146,7 +176,15 @@ public class VehicleControllerPhysics : MonoBehaviour
 
         steeringWheelTransform.localEulerAngles = new Vector3(0, currentSteeringAngle * steeringWheelModelRotationMultiplier, 0f);
     }
-    
+
+    private void CalculateSpeed()
+    {
+        currentSpeed = (this.transform.position - lastPos).magnitude / Time.fixedDeltaTime;
+        lastPos = this.transform.position;
+    }
+
+    //Visual Elements
+
     private void UpdateWheel(WheelCollider wheelCollider, Transform wheelTransform)
     {
         wheelCollider.GetWorldPose(out Vector3 pos, out Quaternion rot);
@@ -156,8 +194,13 @@ public class VehicleControllerPhysics : MonoBehaviour
 
     private void UpdateNeedle()
     {
-        float currentSpeed = (this.transform.position - lastPos).magnitude / Time.fixedDeltaTime;
         SpeedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(SpeedNeedleStartRot.x, SpeedNeedleStartRot.y + (currentSpeed * SpeedNeedleAngleMultiplier), SpeedNeedleStartRot.z)));
-        lastPos = this.transform.position;
+    }
+
+    //Audio Elements
+
+    private void UpdateAudio(float motorTorque)
+    {
+        FMODManager.i.SetInstanceParam(engineInst, "torque", motorTorque);
     }
 }

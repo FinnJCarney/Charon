@@ -1,4 +1,5 @@
-﻿title: NoBridgesNPC_Crash
+title: NoBridgesNPC_Crash
+position: 316,29
 ---
 
 Lady with an Elk's Face: Are you mad?
@@ -6,6 +7,7 @@ Lady with an Elk's Face: Are you mad?
 ===
 
 title: NoBridgesNPC_Arrive
+position: 157,205
 ---
 
 Lady with an Elk's Face: This is good. 
@@ -15,6 +17,7 @@ Lady with an Elk's Face: Thank you, Driver.
 ===
 
 title: NoBridgesNPC_UnderBridge
+position: 121,-107
 ---
 
 Lady with a Elk's Face: Ignorant. 
@@ -23,6 +26,7 @@ Lady with a Elk's Face: Ignorant.
 ===
 
 title: NoBridgesNPC_Start
+position: -164,42
 ---
 
 Lady with an Elk's Face: I'm heading to Angels.

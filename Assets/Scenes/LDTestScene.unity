@@ -304,10 +304,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 226845127}
-    - target: {fileID: 415815487598683284, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 1013988533967203052, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -383,18 +379,6 @@ PrefabInstance:
     - target: {fileID: 2009895813588868396, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2156342094114406380, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2156342094114406380, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.132
-      objectReference: {fileID: 0}
-    - target: {fileID: 2156342094114406380, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.195
       objectReference: {fileID: 0}
     - target: {fileID: 2170747658537718318, guid: 1b3927b90a374684fa82f653114ce0f0, type: 3}
       propertyPath: m_Mesh
@@ -32609,6 +32593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1451488919}
   - component: {fileID: 1451488920}
+  - component: {fileID: 1451488921}
   m_Layer: 0
   m_Name: Global Audio
   m_TagString: Untagged
@@ -32662,6 +32647,18 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 10000
   OverrideMaxDistance: 10000
+--- !u!114 &1451488921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451488918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c973a4675716142b24d955a817234d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1452954099
 GameObject:
   m_ObjectHideFlags: 0
