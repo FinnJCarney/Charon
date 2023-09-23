@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RadioControl",
+                    "type": "Value",
+                    "id": "01d9cce4-0f81-436f-b777-0240ba725ad6",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -243,6 +252,39 @@
                     "action": "Camera180",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "RadioDPad",
+                    "id": "ac462358-8660-4d89-b311-0c73bc868a24",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RadioControl",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "67633941-812f-47a6-a196-db76b1ef036b",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RadioControl",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "f3acbeb7-a570-45a2-8369-b90652ed90f2",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RadioControl",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

@@ -2073,6 +2073,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 98d6cebe-20bd-4fd2-8e59-7b9dacabe713
     m_ActionName: Player/Camera180[/DualSenseGamepadHID/rightStickPress]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8248792862878883833}
+        m_TargetAssemblyTypeName: RadioManager, Assembly-CSharp
+        m_MethodName: RadioFrequencyInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 01d9cce4-0f81-436f-b777-0240ba725ad6
+    m_ActionName: Player/RadioControl[/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -3568,7 +3584,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &4320754636814930546
@@ -4274,7 +4290,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &4979458615645865745
@@ -4359,7 +4375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6478435721803862902
 Transform:
   m_ObjectHideFlags: 0
@@ -4399,6 +4415,7 @@ MonoBehaviour:
   maxExtents: {x: 0.1, y: 0, z: 0}
   freqValue: 2
   tMP: {fileID: 0}
+  freqChangeSpeed: 0.2
 --- !u!1 &5356112244339847836
 GameObject:
   m_ObjectHideFlags: 0
@@ -6018,6 +6035,7 @@ MonoBehaviour:
   maxExtents: {x: 0.1, y: 0, z: 0}
   freqValue: 2
   tMP: {fileID: 7053323731714714517}
+  freqChangeSpeed: 0.2
 --- !u!1 &8013710748755811234
 GameObject:
   m_ObjectHideFlags: 0

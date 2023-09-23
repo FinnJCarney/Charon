@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class RadioManager : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class RadioManager : MonoBehaviour
     [SerializeField] Vector3 maxExtents;
     [SerializeField] [Range(0f, 10f)] private float freqValue;
     [SerializeField] TextMeshPro tMP;
+    [SerializeField] private float freqChangeSpeed = .2f;
     private Vector3 startingPos;
+    private float freqChange = 0;
 
     void Start()
     {
@@ -28,9 +31,17 @@ public class RadioManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        float newFreqValue = freqValue + freqChange;
+        freqValue = Mathf.Clamp(newFreqValue, 0, 10f);
+        
         FMODManager.i.SetInstanceParam(radioInst, "radioFreq", freqValue);
         radioNeedle.localPosition = startingPos + (maxExtents *(freqValue / 10f));
 
-        tMP.text = (70f + (freqValue * 18.32f)).ToString();
+        tMP.text = (70f + (freqValue * 18.32f)).ToString("0.0");
+    }
+    
+    public void RadioFrequencyInput(InputAction.CallbackContext context)
+    {
+        freqChange = context.ReadValue<float>() * Time.deltaTime * freqChangeSpeed;
     }
 }
