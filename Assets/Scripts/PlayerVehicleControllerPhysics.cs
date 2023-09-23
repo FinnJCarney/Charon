@@ -40,18 +40,20 @@ public class VehicleControllerPhysics : MonoBehaviour
     [SerializeField] private Transform steeringWheelTransform;
     [SerializeField] private float steeringWheelModelRotationMultiplier = 4f;
 
-    [SerializeField] private Transform SpeedNeedleTransform;
-    [SerializeField] [Range(0.1f, 20)] private float SpeedNeedleAngleMultiplier;
-     private Vector3 SpeedNeedleStartRot;
-    private Vector3 lastPos;
+    [SerializeField] private Transform speedNeedleTransform;
+    [SerializeField] [Range(0.1f, 20)] private float speedNeedleAngleMultiplier;
+     private Vector3 _speedNeedleStartRot;
+    private Vector3 _lastPos;
 
     [Header("Audio Elements")]
     [SerializeField] private FMODUnity.EventReference engineRef;
     [SerializeField] private Transform engineTransform;
-    private FMOD.Studio.EventInstance engineInst;
-    private FMOD.Studio.PARAMETER_ID torque;
+    private FMOD.Studio.EventInstance _engineInst;
+    private FMOD.Studio.PARAMETER_ID _torque;
 
-    private float currentSpeed;
+    private float _currentSpeed;
+    private float _currentForwardWheelSlipAvg = 0f;
+    private float _currentSidewaysWheelSlipAvg = 0f;
 
 
     public void SteeringInput(InputAction.CallbackContext context)
@@ -113,12 +115,15 @@ public class VehicleControllerPhysics : MonoBehaviour
 
     private void SetNeedle()
     {
-        SpeedNeedleStartRot = SpeedNeedleTransform.rotation.eulerAngles;
+        if (speedNeedleTransform != null)
+        {
+            _speedNeedleStartRot = speedNeedleTransform.rotation.eulerAngles;
+        }
     }
 
     private void CreateAudioEvents()
     {
-        engineInst = FMODManager.i.CreateAttachedInstance(engineRef, engineTransform);
+        _engineInst = FMODManager.i.CreateAttachedInstance(engineRef, engineTransform);
     }
 
     private void FixedUpdate()
@@ -128,6 +133,7 @@ public class VehicleControllerPhysics : MonoBehaviour
         CalculateTorque();
         CalculateSteering();
         CalculateSpeed();
+        CalculateSkidding();
         UpdateNeedle();
     }
 
@@ -160,7 +166,7 @@ public class VehicleControllerPhysics : MonoBehaviour
         backLeftWheelCollider.brakeTorque = currentBrakeTorque;
         backRightWheelCollider.brakeTorque = currentBrakeTorque;
 
-        UpdateAudio(motorTorque / maxForwardTorque * (currentSpeed / 10));
+        UpdateAudio(motorTorque / maxForwardTorque * (_currentSpeed / 10));
     }
 
     private void CalculateSteering()
@@ -179,8 +185,29 @@ public class VehicleControllerPhysics : MonoBehaviour
 
     private void CalculateSpeed()
     {
-        currentSpeed = (this.transform.position - lastPos).magnitude / Time.fixedDeltaTime;
-        lastPos = this.transform.position;
+        _currentSpeed = (this.transform.position - _lastPos).magnitude / Time.fixedDeltaTime;
+        _lastPos = this.transform.position;
+    }
+    
+    private void CalculateSkidding()
+    {
+        frontLeftWheelCollider.GetGroundHit(out WheelHit hitFL);
+        frontRightWheelCollider.GetGroundHit(out WheelHit hitFR);
+        backLeftWheelCollider.GetGroundHit(out WheelHit hitBL);
+        backRightWheelCollider.GetGroundHit(out WheelHit hitBR);
+        _currentForwardWheelSlipAvg = 0f;
+        _currentForwardWheelSlipAvg =+ hitFL.forwardSlip;
+        _currentForwardWheelSlipAvg =+ hitFR.forwardSlip;
+        _currentForwardWheelSlipAvg /= 2;
+        
+        _currentSidewaysWheelSlipAvg = 0f;
+        _currentSidewaysWheelSlipAvg =+ hitFL.sidewaysSlip;
+        _currentSidewaysWheelSlipAvg =+ hitFR.sidewaysSlip;
+        _currentSidewaysWheelSlipAvg =+ hitBL.sidewaysSlip;
+        _currentSidewaysWheelSlipAvg =+ hitBR.sidewaysSlip;
+        _currentSidewaysWheelSlipAvg /= 4;
+        
+        //Debug.Log($"ForwardSlip: {_currentForwardWheelSlipAvg}, SidewaysSlip: {_currentSidewaysWheelSlipAvg}");
     }
 
     //Visual Elements
@@ -194,13 +221,18 @@ public class VehicleControllerPhysics : MonoBehaviour
 
     private void UpdateNeedle()
     {
-        SpeedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(new Vector3(SpeedNeedleStartRot.x, SpeedNeedleStartRot.y + (currentSpeed * SpeedNeedleAngleMultiplier), SpeedNeedleStartRot.z)));
+        if (speedNeedleTransform != null)
+        {
+            speedNeedleTransform.SetLocalPositionAndRotation(Vector3.zero,
+                Quaternion.Euler(new Vector3(_speedNeedleStartRot.x,
+                    _speedNeedleStartRot.y + (_currentSpeed * speedNeedleAngleMultiplier), _speedNeedleStartRot.z)));
+        }
     }
 
     //Audio Elements
 
     private void UpdateAudio(float motorTorque)
     {
-        FMODManager.i.SetInstanceParam(engineInst, "torque", motorTorque);
+        FMODManager.i.SetInstanceParam(_engineInst, "torque", motorTorque);
     }
 }
