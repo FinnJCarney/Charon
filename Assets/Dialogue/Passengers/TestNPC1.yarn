@@ -1,4 +1,4 @@
-﻿title: TestNPC1Crash
+﻿title: TestNPC1_Crash
 position: 11,210
 ---
 
@@ -7,7 +7,7 @@ Me: oops sorry
 
 ===
 
-title: TestNPC1ArriveAtDestination
+title: TestNPC1_Arrive
 position: 17,366
 ---
 
