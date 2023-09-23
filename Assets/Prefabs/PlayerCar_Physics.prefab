@@ -2075,7 +2075,7 @@ MonoBehaviour:
     m_ActionName: Player/Camera180[/DualSenseGamepadHID/rightStickPress]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8248792862878883833}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RadioManager, Assembly-CSharp
         m_MethodName: RadioFrequencyInput
         m_Mode: 0
@@ -4375,7 +4375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6478435721803862902
 Transform:
   m_ObjectHideFlags: 0
@@ -4410,11 +4410,11 @@ MonoBehaviour:
       Data3: -904129610
       Data4: 168051790
     Path: event:/PlayerCarRadio
-  radioTransform: {fileID: 0}
-  radioNeedle: {fileID: 0}
+  radioTransform: {fileID: 9082419494078117831}
+  radioNeedle: {fileID: 6011579039026388530}
   maxExtents: {x: 0.1, y: 0, z: 0}
   freqValue: 2
-  tMP: {fileID: 0}
+  tMP: {fileID: 7053323731714714517}
   freqChangeSpeed: 0.2
 --- !u!1 &5356112244339847836
 GameObject:
@@ -5986,7 +5986,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3753174342353243566}
-  - component: {fileID: 8248792862878883833}
   m_Layer: 0
   m_Name: RadioVisuals
   m_TagString: Untagged
@@ -6011,31 +6010,6 @@ Transform:
   - {fileID: 6011579039026388530}
   m_Father: {fileID: 2600692424517473007}
   m_LocalEulerAnglesHint: {x: -75, y: 0, z: 0}
---- !u!114 &8248792862878883833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7908295637076424223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb776850a48e84f9ce39c5f22621bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radioRef:
-    Guid:
-      Data1: 1032654967
-      Data2: 1110115314
-      Data3: -904129610
-      Data4: 168051790
-    Path: event:/PlayerCarRadio
-  radioTransform: {fileID: 9082419494078117831}
-  radioNeedle: {fileID: 6011579039026388530}
-  maxExtents: {x: 0.1, y: 0, z: 0}
-  freqValue: 2
-  tMP: {fileID: 7053323731714714517}
-  freqChangeSpeed: 0.2
 --- !u!1 &8013710748755811234
 GameObject:
   m_ObjectHideFlags: 0
