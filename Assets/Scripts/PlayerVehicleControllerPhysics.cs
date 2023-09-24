@@ -48,7 +48,10 @@ public class VehicleControllerPhysics : MonoBehaviour
     [Header("Audio Elements")]
     [SerializeField] private FMODUnity.EventReference engineRef;
     [SerializeField] private Transform engineTransform;
+    [SerializeField] private FMODUnity.EventReference gearRef;
+    [SerializeField] private Transform gearTransform;
     private FMOD.Studio.EventInstance _engineInst;
+    private FMOD.Studio.EventInstance _gearInst;
     private FMOD.Studio.PARAMETER_ID _torque;
 
     private float _currentSpeed;
@@ -97,13 +100,31 @@ public class VehicleControllerPhysics : MonoBehaviour
     public void HandbrakeInputToggle()
     {
         _handbrakeOn = !_handbrakeOn;
+
+        if (_handbrakeOn)
+        {
+            PlayGearShiftAudio(1);
+        }
+        else
+        {
+            PlayGearShiftAudio(2);
+        }
     }
-    
+
     public void ReverseInput(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             _reverseOn = !_reverseOn;
+        }
+        
+        if(_reverseOn)
+        {
+            PlayGearShiftAudio(4);
+        }
+        else
+        {
+            PlayGearShiftAudio(3);
         }
     }
 
@@ -124,6 +145,8 @@ public class VehicleControllerPhysics : MonoBehaviour
     private void CreateAudioEvents()
     {
         _engineInst = FMODManager.i.CreateAttachedInstance(engineRef, engineTransform);
+        _gearInst = FMODManager.i.CreateAttachedInstance(gearRef, gearTransform);
+
     }
 
     private void FixedUpdate()
@@ -230,6 +253,13 @@ public class VehicleControllerPhysics : MonoBehaviour
     }
 
     //Audio Elements
+    private void PlayGearShiftAudio(int value)
+    {
+        FMODManager.i.SetInstanceParam(_gearInst, "gearShift", value);
+        FMODUnity.RuntimeManager.AttachInstanceToGameObject(_gearInst, gearTransform);
+        _gearInst.start();
+    }
+
 
     private void UpdateAudio(float motorTorque)
     {

@@ -67,7 +67,12 @@ public class CameraControls : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("Hello?");
+            _camera180Input = true;
+        }
+
+        if(context.canceled)
+        {
+            _camera180Input = false;
         }
     }
 
@@ -86,8 +91,8 @@ public class CameraControls : MonoBehaviour
             //180
             if (_camera180Input)
             {
-                newXRotation = 180f;
-                newYRotation = 0f;
+                newXRotation = 0f;
+                newYRotation = 180f;
             }
             else
             {

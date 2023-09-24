@@ -25,7 +25,6 @@ public class FMODManager : MonoBehaviour
     public void PlayOneShotAttached(EventReference eventRef, Transform attachObj)
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(eventRef, attachObj.gameObject);
-
     }
 
     public FMOD.Studio.EventInstance CreateAttachedInstance(EventReference eventRef, Transform attachObj)
